@@ -7,10 +7,11 @@
   <title>portfolio.</title>
   <link rel="icon" type="image/x-icon" href="assets/images/logo.png" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"><!-- Firebase App (the core Firebase SDK) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<!-- Firestore -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <!-- Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
 
 
   <style>
@@ -37,11 +38,11 @@
     body {
       font-family: "Poppins", sans-serif;
     }
-
   </style>
 </head>
 
-<body class="bg-cover bg-center h-screen w-screen relative" style="background-image: url('assets/images/index-bg.png');">
+<body class="bg-cover bg-center h-screen w-screen relative"
+  style="background-image: url('assets/images/index-bg.png');">
 
   <!-- Black overlay -->
   <div class="absolute inset-0 bg-black/25 z-0"></div>
@@ -61,7 +62,8 @@
       </div>
 
       <!-- Background image inside modal -->
-      <div class="relative w-full h-full bg-cover bg-center" style="background-image: url('assets/images/home-bg.png');">
+      <div class="relative w-full h-full bg-cover bg-center"
+        style="background-image: url('assets/images/home-bg.png');">
         <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center bg-black/40 p-4">
           <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold serif mb-1 drop-shadow">nat<i>h</i>alie.</h1>
           <h2 class="text-lg sm:text-2xl md:text-3xl tracking-tighter mb-4 drop-shadow">Software Developer</h2>
@@ -79,7 +81,64 @@
   <div id="projectsModal"></div>
 
   <!-- About Modal -->
-  <div id="aboutModal"></div>
+  <div id="aboutModal" class="fixed inset-0 flex items-center md:items-start justify-center z-50 pt-0 md:pt-16"
+    onclick="handleBackgroundClick(event, 'aboutModal', 'aboutModalContent')">
+    <div id="aboutModalContent"
+      class="transform transition-all duration-300 scale-95 opacity-0 bg-white rounded-2xl shadow-2xl w-[90%] sm:w-[80%] md:w-[70%] max-h-[90vh] aspect-[3/5] md:aspect-[16/9] overflow-hidden relative flex flex-col">
+
+
+      <!-- macOS browser bar -->
+      <div class="flex items-center px-4 py-2 bg-gray-100 border-b border-gray-300 shrink-0">
+        <div class="flex gap-2">
+          <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-red-500"></span>
+          <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-yellow-500"></span>
+          <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-green-500"></span>
+        </div>
+        <span class="absolute left-1/2 transform -translate-x-1/2 text-xs text-gray-500 font-bold">ABOUT</span>
+      </div>
+
+      <!-- Scrollable content area -->
+      <div class="overflow-y-auto flex-1">
+        <!-- Background image section -->
+        <div class="relative w-full h-full bg-[url('assets/images/about-bg.png')] bg-cover bg-center">
+
+          <!-- Scrollable and centered content -->
+          <div class="absolute inset-0 overflow-y-auto bg-black/40">
+            <div class="min-h-full flex flex-col items-center justify-center text-white text-center p-4 sm:p-6 md:p-0">
+              <!-- About image -->
+              <img src="assets/images/about.png" alt="About Me" class="w-16 sm:w-24 md:w-28 lg:w-32 mb-4 rounded-xl" />
+
+              <!-- Headings -->
+              <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold serif mb-1 drop-shadow">Nathalie Deanna
+              </h1>
+              <h2 class="text-2xl sm:text-3xl md:text-4xl tracking-tighter mb-1 drop-shadow">Software
+                Developer</h2>
+              <h3 class="text-sm sm:text-base md:text-lg px-6 mb-4 drop-shadow max-w-4xl">
+                I am a dedicated and driven Information Technology graduate with a passion for developing
+                innovative solutions through technology. With a strong academic foundation, I have honed
+                my skills in problem-solving, collaboration, and communication—applying them effectively
+                in both individual and team-based projects.
+              </h3>
+
+              <!-- Techstack -->
+
+              <div class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-4xl mx-auto">
+                <h2
+                  class="serif italic text-black text-3xl sm:text-3xl md:text-4xl tracking-tighter mb-4 drop-shadow text-center">
+                  Techstack</h2>
+                <div id="techstackDiv" class="flex flex-wrap justify-center items-center gap-4">
+                  <!-- Techstack icons will be appended here -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- Contact Modal -->
   <div id="contactModal"></div>
@@ -124,11 +183,11 @@
       .then(data => {
         document.getElementById('projectsModal').innerHTML = data;
       });
-    fetch('about.html')
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById('aboutModal').innerHTML = data;
-      });
+    // fetch('about.html')
+    //   .then(res => res.text())
+    //   .then(data => {
+    //     document.getElementById('aboutModal').innerHTML = data;
+    //   });
     fetch('contact.html')
       .then(res => res.text())
       .then(data => {
@@ -249,37 +308,58 @@
 
   </script>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyB7RvIuO1jU_WT8gSjFcFsXzmbaXy8i2dk",
-    authDomain: "nd-portfolio-d0ef5.firebaseapp.com",
-    projectId: "nd-portfolio-d0ef5",
-    storageBucket: "nd-portfolio-d0ef5.appspot.com",
-    messagingSenderId: "1062038850340",
-    appId: "1:1062038850340:web:df49fed9697ff8693341b1",
-    measurementId: "G-S0FG5FBEF0"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7RvIuO1jU_WT8gSjFcFsXzmbaXy8i2dk",
+      authDomain: "nd-portfolio-d0ef5.firebaseapp.com",
+      projectId: "nd-portfolio-d0ef5",
+      storageBucket: "nd-portfolio-d0ef5.appspot.com",
+      messagingSenderId: "1062038850340",
+      appId: "1:1062038850340:web:df49fed9697ff8693341b1",
+      measurementId: "G-S0FG5FBEF0"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  const container = document.querySelector('.techstackDiv');
+    window.addEventListener("DOMContentLoaded", async () => {
+      const container = document.getElementById("techstackDiv");
+      if (!container) {
+        console.error("❌ techstackDiv not found in DOM");
+        return;
+      }
 
-  const querySnapshot = await getDocs(collection(db, "Techstack"));
-  querySnapshot.forEach((doc) => {
-    const { image } = doc.data();
-    const img = document.createElement("img");
-    img.src = image;
-    img.alt = doc.id;
-    img.className = "techstack";
-    container.appendChild(img);
-  });
-</script>
+      try {
+        const querySnapshot = await getDocs(collection(db, "Techstack"));
+        if (querySnapshot.empty) {
+          console.warn("⚠️ No documents found in the 'Techstack' collection.");
+        }
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          console.log(`📦 Loaded tech: ${doc.id}`, data);
+
+          const image = data.image;
+          if (!image || typeof image !== "string") {
+            console.warn(`⚠️ Document '${doc.id}' has no valid 'image' field.`);
+            return;
+          }
+
+          const img = document.createElement("img");
+          img.src = image;
+          img.alt = doc.id;
+          img.className = "techstack h-8 sm:h-10";
+          container.appendChild(img);
+        });
+      } catch (error) {
+        console.error("❌ Error fetching tech stack data:", error);
+      }
+    });
+  </script>
 
 </body>
-
 
 </html>
