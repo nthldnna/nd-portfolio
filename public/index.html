@@ -266,7 +266,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const container = document.querySelector('.flex.flex-wrap');
+  const container = document.querySelector('.techstackDiv');
 
   const querySnapshot = await getDocs(collection(db, "Techstack"));
   querySnapshot.forEach((doc) => {
@@ -274,7 +274,7 @@
     const img = document.createElement("img");
     img.src = image;
     img.alt = doc.id;
-    img.className = "techstack w-8 h-8 sm:w-10 sm:h-10";
+    img.className = "techstack";
     container.appendChild(img);
   });
 </script>
