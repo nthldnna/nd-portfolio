@@ -1,6 +1,3 @@
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
-
 <div id="contactModal" class="fixed inset-0 flex items-center md:items-start justify-center z-50 pt-0 md:pt-16"
     onclick="handleBackgroundClick(event, 'contactModal', 'contactModalContent')">
     <div id="contactModalContent"
@@ -33,14 +30,14 @@
 
                         <!-- Headings -->
                         <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold serif mb-1 drop-shadow">
-                            We are here taaaaaaaaaaaaaaaaao help!
+                            We are here to help!
                         </h1>
                         <h2 class="text-2xl sm:text-3xl md:text-4xl tracking-tighter mb-6 drop-shadow">
                             Feel free to reach out using the form below.
                         </h2>
 
                         <!-- Contact Form -->
-                        <form class="w-full max-w-md text-left space-y-4 px-4">
+                        <form id="contactForm" class="w-full max-w-md text-left space-y-4 px-4">
                             <div>
                                 <label for="name" class="block text-sm font-semibold text-white mb-1">Name</label>
                                 <input type="text" id="name" name="name"
@@ -74,9 +71,9 @@
                     </div>
                 </div>
 
-
             </div>
 
         </div>
     </div>
 </div>
+
