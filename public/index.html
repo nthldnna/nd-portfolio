@@ -250,59 +250,7 @@
     }
 
   </script>
-
-  <!-- <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB7RvIuO1jU_WT8gSjFcFsXzmbaXy8i2dk",
-      authDomain: "nd-portfolio-d0ef5.firebaseapp.com",
-      projectId: "nd-portfolio-d0ef5",
-      storageBucket: "nd-portfolio-d0ef5.appspot.com",
-      messagingSenderId: "1062038850340",
-      appId: "1:1062038850340:web:df49fed9697ff8693341b1",
-      measurementId: "G-S0FG5FBEF0"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      const container = document.getElementById("techstackDiv");
-      if (!container) {
-        console.error("❌ techstackDiv not found in DOM");
-        return;
-      }
-
-      try {
-        const querySnapshot = await getDocs(collection(db, "Techstack"));
-        if (querySnapshot.empty) {
-          console.warn("⚠️ No documents found in the 'Techstack' collection.");
-        }
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          console.log(`📦 Loaded tech: ${doc.id}`, data);
-
-          const image = data.image;
-          if (!image || typeof image !== "string") {
-            console.warn(`⚠️ Document '${doc.id}' has no valid 'image' field.`);
-            return;
-          }
-
-          const img = document.createElement("img");
-          img.src = image;
-          img.alt = doc.id;
-          img.className = "techstack h-8 sm:h-10";
-          container.appendChild(img);
-        });
-      } catch (error) {
-        console.error("❌ Error fetching tech stack data:", error);
-      }
-    });
-  </script> -->
-
+  
 </body>
 
 </html>
