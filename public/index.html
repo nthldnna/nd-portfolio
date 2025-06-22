@@ -267,7 +267,24 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+  const db = firebase.firestore();
 </script>
+
+<script>
+  const container = document.querySelector('.flex.flex-wrap');
+
+  db.collection("Techstack").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const { image } = doc.data();
+      const img = document.createElement("img");
+      img.src = image;
+      img.alt = doc.id;
+      img.className = "techstack w-8 h-8 sm:w-10 sm:h-10";
+      container.appendChild(img);
+    });
+  });
+</script>
+
 </body>
 
 
