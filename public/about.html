@@ -1,0 +1,61 @@
+<div id="aboutModal" class="fixed inset-0 flex items-center md:items-start justify-center z-50 pt-0 md:pt-16"
+    onclick="handleBackgroundClick(event, 'aboutModal', 'aboutModalContent')">
+    <div id="aboutModalContent"
+        class="transform transition-all duration-300 scale-95 opacity-0 bg-white rounded-2xl shadow-2xl w-[90%] sm:w-[80%] md:w-[70%] max-h-[90vh] aspect-[3/5] md:aspect-[16/9] overflow-hidden relative flex flex-col">
+
+
+        <!-- macOS browser bar -->
+        <div class="flex items-center px-4 py-2 bg-gray-100 border-b border-gray-300 shrink-0">
+            <div class="flex gap-2">
+                <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-red-500"></span>
+                <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-yellow-500"></span>
+                <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-green-500"></span>
+            </div>
+            <span class="absolute left-1/2 transform -translate-x-1/2 text-xs text-gray-500 font-bold">ABOUT</span>
+        </div>
+
+        <!-- Scrollable content area -->
+        <div class="overflow-y-auto flex-1">
+            <!-- Background image section -->
+            <div class="relative w-full h-full bg-[url('assets/images/about-bg.png')] bg-cover bg-center">
+
+                <!-- Scrollable and centered content -->
+                <div class="absolute inset-0 overflow-y-auto bg-black/40">
+                    <div
+                        class="min-h-full flex flex-col items-center justify-center text-white text-center p-4 sm:p-6 md:p-0">
+                        <!-- About image -->
+                        <img src="assets/images/about.png" alt="About Me"
+                            class="w-16 sm:w-24 md:w-28 lg:w-32 mb-4 rounded-xl" />
+
+                        <!-- Headings -->
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold serif mb-1 drop-shadow">Nathalie Deanna
+                        </h1>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl tracking-tighter mb-1 drop-shadow">Software
+                            Developer</h2>
+                        <h3 class="text-sm sm:text-base md:text-lg px-6 mb-4 drop-shadow max-w-4xl">
+                            I am a dedicated and driven Information Technology graduate with a passion for developing
+                            innovative solutions through technology. With a strong academic foundation, I have honed
+                            my skills in problem-solving, collaboration, and communication—applying them effectively
+                            in both individual and team-based projects.
+                        </h3>
+
+                        <!-- Techstack -->
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl tracking-tighter mb-2 drop-shadow">Techstack</h2>
+                        <div class="flex flex-wrap justify-center items-center gap-4 mb-4">
+                            <img src="assets/icons/html.png" alt="HTML" class="w-8 h-8 sm:w-10 sm:h-10" />
+                            <img src="assets/icons/css.png" alt="CSS" class="w-8 h-8 sm:w-10 sm:h-10" />
+                            <img src="assets/icons/js.png" alt="JavaScript" class="w-8 h-8 sm:w-10 sm:h-10" />
+                            <img src="assets/icons/php.png" alt="PHP" class="w-8 h-8 sm:w-10 sm:h-10" />
+                            <img src="assets/icons/laravel.png" alt="Laravel" class="w-8 h-8 sm:w-10 sm:h-10" />
+                            <img src="assets/icons/mysql.png" alt="MySQL" class="w-8 h-8 sm:w-10 sm:h-10" />
+                            <img src="assets/icons/figma.png" alt="Figma" class="w-8 h-8 sm:w-10 sm:h-10" />
+                            <img src="assets/icons/canva.png" alt="Canva" class="w-8 h-8 sm:w-10 sm:h-10" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
