@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>portfolio.</title>
+  <link rel="icon" type="image/x-icon" href="assets/images/logo.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <!-- Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    :root {
+      --primary-blue: #B5D5FE;
+      --soft-cream: #FCF3E2;
+      --salmon: #F5A294;
+      --mint: #C9E9DA;
+      --pink: #F4B7CC;
+      --lime: #ECF1BE;
+      --white: #FFFFFF;
+    }
+
+    .serif {
+      font-family: "Instrument Serif", serif;
+    }
+
+    .poppins {
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-cover bg-center h-screen w-screen relative"
+  style="background-image: url('assets/images/bg-index.png');">
+
+  <!-- Black overlay -->
+  <div class="absolute inset-0 bg-black/25 z-0 pointer-events-none"></div>
+
+  <!-- Home Modal -->
+  <div id="homeModal" class="fixed inset-0 flex items-center md:items-start justify-center z-50 pt-0 md:pt-16">
+    <div id="homeModalContent"
+      class="transform transition-all duration-300 scale-95 opacity-0 bg-white rounded-xl shadow-2xl w-[90%] sm:w-[80%] md:w-[70%] max-h-[90vh] aspect-[3/4] md:aspect-[16/9] overflow-hidden relative">
+      <!-- Top macOS bar -->
+      <div class="flex items-center px-4 py-2 bg-gray-100 border-b border-gray-300 relative">
+        <div class="flex gap-2">
+          <span onclick="closeHomeModal()" class="w-3 h-3 rounded-full cursor-pointer bg-red-500"></span>
+          <span onclick="closeHomeModal()" class="w-3 h-3 rounded-full cursor-pointer bg-yellow-500"></span>
+          <span onclick="closeHomeModal()" class="w-3 h-3 rounded-full cursor-pointer bg-green-500"></span>
+        </div>
+        <span class="absolute left-1/2 transform -translate-x-1/2 text-xs text-gray-500 font-bold">HOME</span>
+      </div>
+
+      <!-- Background image inside modal -->
+      <div class="relative w-full h-full bg-cover bg-center"
+        style="background-image: url('assets/images/bg-home.png');">
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center bg-black/40 p-4">
+          <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold serif mb-1 drop-shadow">nat<i>h</i>alie.</h1>
+          <h2 class="text-lg sm:text-2xl md:text-3xl tracking-tighter mb-4 drop-shadow">Software Developer</h2>
+          <a href="#" onclick="projectsToggleModal(event)">
+            <span
+              class="inline-flex text-base sm:text-lg gap-2 border-b border-white pb-0.5 hover:scale-105 transition-transform cursor-pointer">
+              Get Started
+              <i class="bi bi-arrow-right"></i>
+            </span>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects Modal -->
+  <div id="projectsModal"></div>
+
+  <!-- About Modal -->
+  <div id="aboutModal" class="fixed inset-0 flex items-center md:items-start justify-center z-50 pt-0 md:pt-16"
+    onclick="handleBackgroundClick(event, 'aboutModal', 'aboutModalContent')">
+    <div id="aboutModalContent"
+      class="transform transition-all duration-300 scale-95 opacity-0 bg-white rounded-2xl shadow-2xl w-[90%] sm:w-[80%] md:w-[70%] max-h-[90vh] aspect-[3/5] md:aspect-[16/9] overflow-hidden relative flex flex-col">
+
+
+      <!-- macOS browser bar -->
+      <div class="flex items-center px-4 py-2 bg-gray-100 border-b border-gray-300 shrink-0">
+        <div class="flex gap-2">
+          <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-red-500"></span>
+          <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-yellow-500"></span>
+          <span onclick="closeAbouttModal()" class="w-3 h-3 rounded-full cursor-pointer bg-green-500"></span>
+        </div>
+        <span class="absolute left-1/2 transform -translate-x-1/2 text-xs text-gray-500 font-bold">ABOUT</span>
+      </div>
+
+      <!-- Scrollable content area -->
+      <div class="overflow-y-auto flex-1">
+        <!-- Background image section -->
+        <div class="relative w-full h-full bg-[url('assets/images/bg-about.png')] bg-cover bg-center">
+
+          <!-- Scrollable and centered content -->
+          <div class="absolute inset-0 overflow-y-auto bg-black/40">
+            <div class="min-h-full flex flex-col items-center justify-center text-white text-center p-4 sm:p-6 md:p-0">
+              <!-- About image -->
+              <img src="assets/icons/icon-about.png" alt="About Me"
+                class="w-16 sm:w-24 md:w-28 lg:w-32 mb-4 rounded-xl" />
+
+              <!-- Headings -->
+              <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold serif mb-1 drop-shadow">Nathalie Deanna
+              </h1>
+              <h2 class="text-2xl sm:text-3xl md:text-4xl tracking-tighter mb-1 drop-shadow">Software
+                Developer</h2>
+              <h3 class="text-sm sm:text-base md:text-lg px-6 mb-4 drop-shadow max-w-4xl">
+                I am a dedicated and driven Information Technology graduate with a passion for developing
+                innovative solutions through technology. With a strong academic foundation, I have honed
+                my skills in problem-solving, collaboration, and communication—applying them effectively
+                in both individual and team-based projects.
+              </h3>
+
+              <!-- Techstack -->
+
+              <div class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-4xl mx-auto">
+                <h2
+                  class="serif italic text-black text-3xl sm:text-3xl md:text-4xl tracking-tighter mb-4 drop-shadow text-center">
+                  Techstack</h2>
+                <div id="techstackDiv" class="flex flex-wrap justify-center items-center gap-4">
+                  <!-- Techstack icons will be appended here -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Modal -->
+  <div id="contactModal"></div>
+
+  <!-- Bottom Icons Dock -->
+  <div
+    class="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-[60] flex gap-6 bg-black/10 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg">
+    <a href="#" onclick="homeToggleModal(event)"
+      class="flex flex-col items-center text-white hover:scale-110 transition-transform">
+      <img src="assets/icons/1.png" alt="Home" class="w-10 h-10 mb-1">
+      <span class="text-xs">Home</span>
+    </a>
+
+    <a href="#" onclick="projectsToggleModal(event)"
+      class="flex flex-col items-center text-white hover:scale-110 transition-transform">
+      <img src="assets/icons/2.png" alt="Projects" class="w-10 h-10 mb-1">
+      <span class="text-xs">Projects</span>
+    </a>
+    <a href="#" onclick="aboutToggleModal(event)"
+      class="flex flex-col items-center text-white hover:scale-110 transition-transform">
+      <img src="assets/icons/3.png" alt="Contact" class="w-10 h-10 mb-1">
+      <span class="text-xs">About</span>
+    </a>
+    <a href="#" onclick="contactToggleModal(event)"
+      class="flex flex-col items-center text-white hover:scale-110 transition-transform">
+      <img src="assets/icons/4.png" alt="Contact" class="w-10 h-10 mb-1">
+      <span class="text-xs">Contact</span>
+    </a>
+  </div>
+
+  <!-- Toast for Contact -->
+  <div id="toastContainer" class="fixed top-6 right-6 z-[9999] space-y-2"></div>
+
+  <script>
+    // Opens Home Modal on load
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("homeModal");
+      const content = document.getElementById("homeModalContent");
+
+      modal.classList.remove("hidden");
+      content.classList.remove("scale-95", "opacity-0");
+      content.classList.add("scale-100", "opacity-100");
+    });
+
+
+    // Fetch Modals
+    fetch('projects.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('projectsModal').innerHTML = data;
+      });
+    // fetch('about.html')
+    //   .then(res => res.text())
+    //   .then(data => {
+    //     document.getElementById('aboutModal').innerHTML = data;
+    //   });
+    
+
+    // Modal Toggles
+    function toggleModal(currentId, contentId) {
+      // Close all modals
+      const modals = ["homeModal", "projectsModal", "aboutModal", "contactModal"];
+      const contents = ["homeModalContent", "projectsModalContent", "aboutModalContent", "contactModalContent"];
+
+      modals.forEach((id, i) => {
+        const modal = document.getElementById(id);
+        const content = document.getElementById(contents[i]);
+
+        if (!modal.classList.contains("hidden") && id !== currentId) {
+          content.classList.remove("scale-100", "opacity-100");
+          content.classList.add("scale-95", "opacity-0");
+          setTimeout(() => {
+            modal.classList.add("hidden");
+          }, 300);
+        }
+      });
+
+      // Toggle the selected modal
+      const currentModal = document.getElementById(currentId);
+      const currentContent = document.getElementById(contentId);
+      const isHidden = currentModal.classList.contains("hidden");
+
+      if (isHidden) {
+        currentModal.classList.remove("hidden");
+        setTimeout(() => {
+          currentContent.classList.remove("scale-95", "opacity-0");
+          currentContent.classList.add("scale-100", "opacity-100");
+        }, 10);
+      } else {
+        currentContent.classList.remove("scale-100", "opacity-100");
+        currentContent.classList.add("scale-95", "opacity-0");
+        setTimeout(() => {
+          currentModal.classList.add("hidden");
+        }, 300);
+      }
+    }
+
+    // Event Per Modal
+    function homeToggleModal(e) {
+      if (e) e.preventDefault();
+      toggleModal("homeModal", "homeModalContent");
+    }
+    function projectsToggleModal(e) {
+      if (e) e.preventDefault();
+      toggleModal("projectsModal", "projectsModalContent");
+    }
+    function aboutToggleModal(e) {
+      if (e) e.preventDefault();
+      toggleModal("aboutModal", "aboutModalContent");
+    }
+    function contactToggleModal(e) {
+      if (e) e.preventDefault();
+      toggleModal("contactModal", "contactModalContent");
+    }
+
+    // Close Modals
+    function closeModal(modalId, contentId) {
+      const modal = document.getElementById(modalId);
+      const content = document.getElementById(contentId);
+
+      content.classList.remove("scale-100", "opacity-100");
+      content.classList.add("scale-95", "opacity-0");
+
+      setTimeout(() => {
+        modal.classList.add("hidden");
+      }, 300);
+    }
+
+    // Specific closers
+    function closeHomeModal() {
+      closeModal("homeModal", "homeModalContent");
+    }
+    function closeProjectsModal() {
+      closeModal("projectsModal", "projectsModalContent");
+    }
+    function closeAboutModal() {
+      closeModal("aboutModal", "aboutModalContent");
+    }
+    function closeContactModal() {
+      closeModal("contactModal", "contactModalContent");
+    }
+
+    // Project Panels
+    function showContent(sectionId) {
+      const sections = ['web', 'mobile', 'uiux'];
+      sections.forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(sectionId).classList.remove('hidden');
+    }
+    function showPreview(imgSrc, title, description) {
+      const previewPane = document.getElementById("previewPane");
+      previewPane.innerHTML =
+        `
+    <div class="flex flex-col items-start">
+      <img src="${imgSrc}" class="w-20 h-20 mb-4 rounded shadow" />
+      <h5 class="text-lg font-semibold mb-1">${title}</h5>
+      <p class="text-sm text-gray-700">${description}</p>
+    </div>
+  `;
+    }
+
+    // Project Panels
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelector(`#tab-${tab}`).classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-white'));
+      event.currentTarget.classList.add('bg-white');
+    }
+
+    function closeProjectsModal() {
+      const modal = document.getElementById("projectsModal");
+      const content = document.getElementById("projectsModalContent");
+      content.classList.remove("scale-100", "opacity-100");
+      content.classList.add("scale-95", "opacity-0");
+      setTimeout(() => modal.classList.add("hidden"), 300);
+    }
+
+    // Contact Toast
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+
+      toast.className = `max-w-xs w-full px-4 py-3 rounded-lg shadow-md text-white text-sm animate-fade-in-up transition-opacity duration-300 ${type === "success" ? "bg-green-600" : "bg-red-600"
+        }`;
+
+      toast.innerText = message;
+
+      const container = document.getElementById("toastContainer");
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0");
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+
+    // Outside Close
+    function handleBackgroundClick(event, modalId, contentId) {
+      const content = document.getElementById(contentId);
+      if (!content.contains(event.target)) {
+        closeModal(modalId, contentId);
+      }
+    }
+
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      addDoc, query, where,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7RvIuO1jU_WT8gSjFcFsXzmbaXy8i2dk",
+      authDomain: "nd-portfolio-d0ef5.firebaseapp.com",
+      projectId: "nd-portfolio-d0ef5",
+      storageBucket: "nd-portfolio-d0ef5.appspot.com",
+      messagingSenderId: "1062038850340",
+      appId: "1:1062038850340:web:df49fed9697ff8693341b1",
+      measurementId: "G-S0FG5FBEF0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Projects
+    async function loadWebProjects() {
+      const q = query(collection(db, "Projects"), where("category", "==", "webdev"));
+      const querySnapshot = await getDocs(q);
+
+      const container = document.getElementById("tab-web");
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const projectHTML = `
+          <div class="bg-white/10 p-6 rounded-xl mb-6 border border-white/20">
+            <div class="flex flex-col items-center text-center p-4">
+              <h3 class="text-2xl font-bold">${data.name}</h3>
+              <img src="assets/projects/${data.photo}" alt="${data.name}" class="mt-2 rounded-lg w-full max-w-md" /><br>
+              <p class="text-xl italic">Tech: ${data.tech}</p>
+              <p class="text-sm mt-2">${data.desc}</p>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML("beforeend", projectHTML);
+      });
+    }
+
+    async function loadMobileProjects() {
+      const q = query(collection(db, "Projects"), where("category", "==", "mobile"));
+      const querySnapshot = await getDocs(q);
+
+      const container = document.getElementById("tab-mobile");
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const projectHTML = `
+          <div class="bg-white/10 p-6 rounded-xl mb-6 border border-white/20">
+            <div class="flex flex-col items-center text-center p-4">
+              <h3 class="text-2xl font-bold">${data.name}</h3>
+              <img src="assets/projects/${data.photo}" alt="${data.name}" class="mt-2 rounded-lg w-full max-w-md" /><br>
+              <p class="text-xl italic">Tech: ${data.tech}</p>
+              <p class="text-sm mt-2">${data.desc}</p>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML("beforeend", projectHTML);
+      });
+    }
+
+    async function loadUiuxProjects() {
+      const q = query(collection(db, "Projects"), where("category", "==", "uiux"));
+      const querySnapshot = await getDocs(q);
+
+      const container = document.getElementById("tab-uiux");
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const projectHTML = `
+          <div class="bg-white/10 p-6 rounded-xl mb-6 border border-white/20">
+            <div class="flex flex-col items-center text-center p-4">
+              <h3 class="text-2xl font-bold">${data.name}</h3>
+              <img src="assets/projects/${data.photo}" alt="${data.name}" class="mt-2 rounded-lg w-full max-w-md" /><br>
+              <p class="text-xl italic">Tech: ${data.tech}</p>
+              <p class="text-sm mt-2">${data.desc}</p>
+            </div>
+          </div>
+        `;
+
+        container.insertAdjacentHTML("beforeend", projectHTML);
+      });
+    }
+
+    loadWebProjects();
+    loadMobileProjects();
+    loadUiuxProjects();
+
+    // About
+    window.addEventListener("DOMContentLoaded", async () => {
+      const container = document.getElementById("techstackDiv");
+      if (!container) {
+        console.error("❌ techstackDiv not found in DOM");
+        return;
+      }
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "Techstack"));
+        if (querySnapshot.empty) {
+          console.warn("⚠️ No documents found in the 'Techstack' collection.");
+        }
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          console.log(`📦 Loaded tech: ${doc.id}`, data);
+
+          const image = data.image;
+          if (!image || typeof image !== "string") {
+            console.warn(`⚠️ Document '${doc.id}' has no valid 'image' field.`);
+            return;
+          }
+
+          const img = document.createElement("img");
+          img.src = image;
+          img.alt = doc.id;
+          img.className = "techstack h-8 sm:h-10";
+          container.appendChild(img);
+        });
+      } catch (error) {
+        console.error("❌ Error fetching tech stack data:", error);
+      }
+    });
+
+fetch('contact.html')
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById('contactModal').innerHTML = data;
+
+    // ✅ Wait until content is injected, then attach form logic
+    const form = document.getElementById("contactForm");
+
+    if (!form) {
+      console.warn("❗ contactForm not found after loading contact.html");
+      return;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+
+      if (!name || !email || !message) {
+        showToast("Please fill out all fields.", "error");
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "Inquiries"), {
+          name,
+          email,
+          message,
+          timestamp: serverTimestamp()
+        });
+
+        showToast("Message sent, please wait for our email. Thank you!");
+        form.reset();
+
+        setTimeout(() => {
+          location.reload();
+        }, 2500);
+      } catch (err) {
+        console.error("Firestore error:", err);
+        showToast("Failed to send message.", "error");
+      }
+    });
+  });
+
+  </script>
+
+</body>
+
+</html>

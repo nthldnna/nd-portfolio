@@ -1,0 +1,78 @@
+<div id="contactModal" class="fixed inset-0 flex items-center md:items-start justify-center z-50 pt-0 md:pt-16"
+    onclick="handleBackgroundClick(event, 'contactModal', 'contactModalContent')">
+    <div id="contactModalContent"
+        class="transform transition-all duration-300 scale-95 opacity-0 bg-white rounded-2xl shadow-2xl w-[90%] sm:w-[80%] md:w-[70%] max-h-[90vh] aspect-[3/5] md:aspect-[16/9] overflow-hidden relative flex flex-col">
+
+        <!-- macOS browser bar -->
+        <div class="flex items-center px-4 py-2 bg-gray-100 border-b border-gray-300 shrink-0">
+            <div class="flex gap-2">
+                <span onclick="closeContactModal()" class="w-3 h-3 rounded-full cursor-pointer bg-red-500"></span>
+                <span onclick="closeContactModal()" class="w-3 h-3 rounded-full cursor-pointer bg-yellow-500"></span>
+                <span onclick="closeContactModal()" class="w-3 h-3 rounded-full cursor-pointer bg-green-500"></span>
+            </div>
+            <span class="absolute left-1/2 transform -translate-x-1/2 text-xs text-gray-500 font-bold">Contact</span>
+        </div>
+
+        <!-- Scrollable content area -->
+        <div class="overflow-y-auto flex-1">
+            <!-- Background image section -->
+            <div class="relative w-full h-full bg-[url('assets/images/bg-contact.png')] bg-cover bg-center">
+
+                <!-- Scrollable and centered content -->
+                <div class="absolute inset-0 overflow-y-auto bg-black/40">
+                    <div
+                        class="min-h-full flex flex-col items-center justify-center text-white text-center p-4 sm:p-6 md:p-0">
+
+                        <!-- Contact image -->
+                        <img src="assets/icons/web.png" alt="Contact"
+                            class="w-16 sm:w-24 md:w-28 lg:w-32 mb-4 rounded-xl" />
+
+                        <!-- Headings -->
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold serif mb-1 drop-shadow">
+                            We are here to help!
+                        </h1>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl tracking-tighter mb-6 drop-shadow">
+                            Feel free to reach out using the form below.
+                        </h2>
+
+                        <!-- Contact Form -->
+                        <form id="contactForm" class="w-full max-w-md text-left space-y-4 px-4">
+                            <div>
+                                <label for="name" class="block text-sm font-semibold text-white mb-1">Name</label>
+                                <input type="text" id="name" name="name"
+                                    class="w-full px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    placeholder="Your name" />
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-sm font-semibold text-white mb-1">Email</label>
+                                <input type="email" id="email" name="email"
+                                    class="w-full px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    placeholder="you@example.com" />
+                            </div>
+
+                            <div>
+                                <label for="message" class="block text-sm font-semibold text-white mb-1">Message</label>
+                                <textarea id="message" name="message" rows="4"
+                                    class="w-full px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    placeholder="Type your message here..."></textarea>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit"
+                                    class="bg-gradient-to-b from-white/80 to-white/60 backdrop-blur-md border border-gray-300 text-gray-800 px-6 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+                                    Send Message
+                                </button>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
