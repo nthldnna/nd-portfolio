@@ -13,7 +13,6 @@
   <!-- Firestore -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
 
-
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
@@ -42,7 +41,7 @@
 </head>
 
 <body class="bg-cover bg-center h-screen w-screen relative"
-  style="background-image: url('assets/images/index-bg.png');">
+  style="background-image: url('assets/images/bg-index.png');">
 
   <!-- Black overlay -->
   <div class="absolute inset-0 bg-black/25 z-0"></div>
@@ -63,7 +62,7 @@
 
       <!-- Background image inside modal -->
       <div class="relative w-full h-full bg-cover bg-center"
-        style="background-image: url('assets/images/home-bg.png');">
+        style="background-image: url('assets/images/bg-home.png');">
         <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center bg-black/40 p-4">
           <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold serif mb-1 drop-shadow">nat<i>h</i>alie.</h1>
           <h2 class="text-lg sm:text-2xl md:text-3xl tracking-tighter mb-4 drop-shadow">Software Developer</h2>
@@ -100,13 +99,13 @@
       <!-- Scrollable content area -->
       <div class="overflow-y-auto flex-1">
         <!-- Background image section -->
-        <div class="relative w-full h-full bg-[url('assets/images/about-bg.png')] bg-cover bg-center">
+        <div class="relative w-full h-full bg-[url('assets/images/bg-about.png')] bg-cover bg-center">
 
           <!-- Scrollable and centered content -->
           <div class="absolute inset-0 overflow-y-auto bg-black/40">
             <div class="min-h-full flex flex-col items-center justify-center text-white text-center p-4 sm:p-6 md:p-0">
               <!-- About image -->
-              <img src="assets/images/about.png" alt="About Me" class="w-16 sm:w-24 md:w-28 lg:w-32 mb-4 rounded-xl" />
+              <img src="assets/icons/icon-about.png" alt="About Me" class="w-16 sm:w-24 md:w-28 lg:w-32 mb-4 rounded-xl" />
 
               <!-- Headings -->
               <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold serif mb-1 drop-shadow">Nathalie Deanna
@@ -298,6 +297,23 @@
   `;
     }
 
+    // Project Panels
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelector(`#tab-${tab}`).classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-white'));
+      event.currentTarget.classList.add('bg-white');
+    }
+
+    function closeProjectsModal() {
+      const modal = document.getElementById("projectsModal");
+      const content = document.getElementById("projectsModalContent");
+      content.classList.remove("scale-100", "opacity-100");
+      content.classList.add("scale-95", "opacity-0");
+      setTimeout(() => modal.classList.add("hidden"), 300);
+    }
+
     // Outside Close
     function handleBackgroundClick(event, modalId, contentId) {
       const content = document.getElementById(contentId);
@@ -311,93 +327,167 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+      getFirestore,
+      collection,
+      getDocs,
+      addDoc, query, where,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 
     const firebaseConfig = {
-        apiKey: "AIzaSyB7RvIuO1jU_WT8gSjFcFsXzmbaXy8i2dk",
-        authDomain: "nd-portfolio-d0ef5.firebaseapp.com",
-        projectId: "nd-portfolio-d0ef5",
-        storageBucket: "nd-portfolio-d0ef5.appspot.com",
-        messagingSenderId: "1062038850340",
-        appId: "1:1062038850340:web:df49fed9697ff8693341b1",
-        measurementId: "G-S0FG5FBEF0"
+      apiKey: "AIzaSyB7RvIuO1jU_WT8gSjFcFsXzmbaXy8i2dk",
+      authDomain: "nd-portfolio-d0ef5.firebaseapp.com",
+      projectId: "nd-portfolio-d0ef5",
+      storageBucket: "nd-portfolio-d0ef5.appspot.com",
+      messagingSenderId: "1062038850340",
+      appId: "1:1062038850340:web:df49fed9697ff8693341b1",
+      measurementId: "G-S0FG5FBEF0"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // Projects
+    async function loadWebProjects() {
+      const q = query(collection(db, "Projects"), where("category", "==", "webdev"));
+      const querySnapshot = await getDocs(q);
+
+      const container = document.getElementById("tab-web");
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const projectHTML = `
+          <div class="bg-white/10 p-6 rounded-xl mb-6 border border-white/20">
+            <div class="flex flex-col items-center text-center p-4">
+              <h3 class="text-2xl font-bold">${data.name}</h3>
+              <img src="assets/projects/${data.photo}" alt="${data.name}" class="mt-2 rounded-lg w-full max-w-md" /><br>
+              <p class="text-xl italic">Tech: ${data.tech}</p>
+              <p class="text-sm mt-2">${data.desc}</p>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML("beforeend", projectHTML);
+      });
+    }
+
+    async function loadMobileProjects() {
+      const q = query(collection(db, "Projects"), where("category", "==", "mobile"));
+      const querySnapshot = await getDocs(q);
+
+      const container = document.getElementById("tab-mobile");
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const projectHTML = `
+          <div class="bg-white/10 p-6 rounded-xl mb-6 border border-white/20">
+            <div class="flex flex-col items-center text-center p-4">
+              <h3 class="text-2xl font-bold">${data.name}</h3>
+              <img src="assets/projects/${data.photo}" alt="${data.name}" class="mt-2 rounded-lg w-full max-w-md" /><br>
+              <p class="text-xl italic">Tech: ${data.tech}</p>
+              <p class="text-sm mt-2">${data.desc}</p>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML("beforeend", projectHTML);
+      });
+    }
+
+    async function loadUiuxProjects() {
+      const q = query(collection(db, "Projects"), where("category", "==", "uiux"));
+      const querySnapshot = await getDocs(q);
+
+      const container = document.getElementById("tab-uiux");
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const projectHTML = `
+          <div class="bg-white/10 p-6 rounded-xl mb-6 border border-white/20">
+            <div class="flex flex-col items-center text-center p-4">
+              <h3 class="text-2xl font-bold">${data.name}</h3>
+              <img src="assets/projects/${data.photo}" alt="${data.name}" class="mt-2 rounded-lg w-full max-w-md" /><br>
+              <p class="text-xl italic">Tech: ${data.tech}</p>
+              <p class="text-sm mt-2">${data.desc}</p>
+            </div>
+          </div>
+        `;
+
+        container.insertAdjacentHTML("beforeend", projectHTML);
+      });
+    }
+
+    loadWebProjects();
+    loadMobileProjects();
+    loadUiuxProjects();
+
+    // About
     window.addEventListener("DOMContentLoaded", async () => {
-        const container = document.getElementById("techstackDiv");
-        if (!container) {
-            console.error("❌ techstackDiv not found in DOM");
+      const container = document.getElementById("techstackDiv");
+      if (!container) {
+        console.error("❌ techstackDiv not found in DOM");
+        return;
+      }
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "Techstack"));
+        if (querySnapshot.empty) {
+          console.warn("⚠️ No documents found in the 'Techstack' collection.");
+        }
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          console.log(`📦 Loaded tech: ${doc.id}`, data);
+
+          const image = data.image;
+          if (!image || typeof image !== "string") {
+            console.warn(`⚠️ Document '${doc.id}' has no valid 'image' field.`);
             return;
+          }
+
+          const img = document.createElement("img");
+          img.src = image;
+          img.alt = doc.id;
+          img.className = "techstack h-8 sm:h-10";
+          container.appendChild(img);
+        });
+      } catch (error) {
+        console.error("❌ Error fetching tech stack data:", error);
+      }
+    });
+
+    // Contact
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("contactForm");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const message = form.message.value.trim();
+
+        if (!name || !email || !message) {
+          alert("Please fill out all fields.");
+          return;
         }
 
         try {
-            const querySnapshot = await getDocs(collection(db, "Techstack"));
-            if (querySnapshot.empty) {
-                console.warn("⚠️ No documents found in the 'Techstack' collection.");
-            }
-
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                console.log(`📦 Loaded tech: ${doc.id}`, data);
-
-                const image = data.image;
-                if (!image || typeof image !== "string") {
-                    console.warn(`⚠️ Document '${doc.id}' has no valid 'image' field.`);
-                    return;
-                }
-
-                const img = document.createElement("img");
-                img.src = image;
-                img.alt = doc.id;
-                img.className = "techstack h-8 sm:h-10";
-                container.appendChild(img);
-            });
-        } catch (error) {
-            console.error("❌ Error fetching tech stack data:", error);
+          await addDoc(collection(db, "Inquiries"), {
+            name,
+            email,
+            message,
+            timestamp: serverTimestamp()
+          });
+          alert("✅ Message sent!");
+          form.reset();
+        } catch (err) {
+          console.error("Firestore error:", err);
+          alert("❌ Failed to send message.");
         }
+      });
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("contactForm");
-
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const name = form.name.value.trim();
-            const email = form.email.value.trim();
-            const message = form.message.value.trim();
-
-            if (!name || !email || !message) {
-                alert("Please fill out all fields.");
-                return;
-            }
-
-            try {
-                await addDoc(collection(db, "Inquiries"), {
-                    name,
-                    email,
-                    message,
-                    timestamp: serverTimestamp()
-                });
-                alert("✅ Message sent!");
-                form.reset();
-            } catch (err) {
-                console.error("Firestore error:", err);
-                alert("❌ Failed to send message.");
-            }
-        });
-    });
-
-</script>
+  </script>
 
 </body>
 
