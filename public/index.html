@@ -44,7 +44,7 @@
   style="background-image: url('assets/images/bg-index.png');">
 
   <!-- Black overlay -->
-  <div class="absolute inset-0 bg-black/25 z-0"></div>
+  <div class="absolute inset-0 bg-black/25 z-0 pointer-events-none"></div>
 
   <!-- Home Modal -->
   <div id="homeModal" class="fixed inset-0 flex items-center md:items-start justify-center z-50 pt-0 md:pt-16">
@@ -66,11 +66,14 @@
         <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center bg-black/40 p-4">
           <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold serif mb-1 drop-shadow">nat<i>h</i>alie.</h1>
           <h2 class="text-lg sm:text-2xl md:text-3xl tracking-tighter mb-4 drop-shadow">Software Developer</h2>
-          <span onclick="closeHomeModal()"
-            class="inline-flex text-base sm:text-lg gap-2 border-b border-white pb-0.5 hover:scale-105 transition-transform cursor-pointer">
-            Get Started
-            <i class="bi bi-arrow-right"></i>
-          </span>
+          <a href="#" onclick="projectsToggleModal(event)">
+            <span
+              class="inline-flex text-base sm:text-lg gap-2 border-b border-white pb-0.5 hover:scale-105 transition-transform cursor-pointer">
+              Get Started
+              <i class="bi bi-arrow-right"></i>
+            </span>
+          </a>
+
         </div>
       </div>
     </div>
@@ -105,7 +108,8 @@
           <div class="absolute inset-0 overflow-y-auto bg-black/40">
             <div class="min-h-full flex flex-col items-center justify-center text-white text-center p-4 sm:p-6 md:p-0">
               <!-- About image -->
-              <img src="assets/icons/icon-about.png" alt="About Me" class="w-16 sm:w-24 md:w-28 lg:w-32 mb-4 rounded-xl" />
+              <img src="assets/icons/icon-about.png" alt="About Me"
+                class="w-16 sm:w-24 md:w-28 lg:w-32 mb-4 rounded-xl" />
 
               <!-- Headings -->
               <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold serif mb-1 drop-shadow">Nathalie Deanna
@@ -168,13 +172,20 @@
     </a>
   </div>
 
+  <!-- Toast for Contact -->
+  <div id="toastContainer" class="fixed top-6 right-6 z-[9999] space-y-2"></div>
+
   <script>
     // Opens Home Modal on load
     document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("homeModal");
       const content = document.getElementById("homeModalContent");
+
+      modal.classList.remove("hidden");
       content.classList.remove("scale-95", "opacity-0");
       content.classList.add("scale-100", "opacity-100");
     });
+
 
     // Fetch Modals
     fetch('projects.html')
@@ -313,6 +324,25 @@
       content.classList.add("scale-95", "opacity-0");
       setTimeout(() => modal.classList.add("hidden"), 300);
     }
+
+    // Contact Toast
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+
+      toast.className = `max-w-xs w-full px-4 py-3 rounded-lg shadow-md text-white text-sm animate-fade-in-up transition-opacity duration-300 ${type === "success" ? "bg-green-600" : "bg-red-600"
+        }`;
+
+      toast.innerText = message;
+
+      const container = document.getElementById("toastContainer");
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0");
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
 
     // Outside Close
     function handleBackgroundClick(event, modalId, contentId) {
@@ -467,7 +497,7 @@
         const message = form.message.value.trim();
 
         if (!name || !email || !message) {
-          alert("Please fill out all fields.");
+          showToast("Please fill out all fields.", "error");
           return;
         }
 
@@ -478,14 +508,20 @@
             message,
             timestamp: serverTimestamp()
           });
-          alert("✅ Message sent!");
+          showToast("Message sent, please wait for our email. Thank you!");
           form.reset();
+          // Reload after 2.5 seconds (toast duration)
+  setTimeout(() => {
+    location.reload();
+  }, 2500);
         } catch (err) {
           console.error("Firestore error:", err);
-          alert("❌ Failed to send message.");
+          showToast("Failed to send message.", "error");
         }
+
       });
     });
+
 
   </script>
 
