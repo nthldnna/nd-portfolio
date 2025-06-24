@@ -198,11 +198,7 @@
     //   .then(data => {
     //     document.getElementById('aboutModal').innerHTML = data;
     //   });
-    fetch('contact.html')
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById('contactModal').innerHTML = data;
-      });
+    
 
     // Modal Toggles
     function toggleModal(currentId, contentId) {
@@ -485,43 +481,51 @@
       }
     });
 
-    // Contact
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("contactForm");
+fetch('contact.html')
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById('contactModal').innerHTML = data;
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    // ✅ Wait until content is injected, then attach form logic
+    const form = document.getElementById("contactForm");
 
-        const name = form.name.value.trim();
-        const email = form.email.value.trim();
-        const message = form.message.value.trim();
+    if (!form) {
+      console.warn("❗ contactForm not found after loading contact.html");
+      return;
+    }
 
-        if (!name || !email || !message) {
-          showToast("Please fill out all fields.", "error");
-          return;
-        }
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        try {
-          await addDoc(collection(db, "Inquiries"), {
-            name,
-            email,
-            message,
-            timestamp: serverTimestamp()
-          });
-          showToast("Message sent, please wait for our email. Thank you!");
-          form.reset();
-          // Reload after 2.5 seconds (toast duration)
-  setTimeout(() => {
-    location.reload();
-  }, 2500);
-        } catch (err) {
-          console.error("Firestore error:", err);
-          showToast("Failed to send message.", "error");
-        }
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
 
-      });
+      if (!name || !email || !message) {
+        showToast("Please fill out all fields.", "error");
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "Inquiries"), {
+          name,
+          email,
+          message,
+          timestamp: serverTimestamp()
+        });
+
+        showToast("Message sent, please wait for our email. Thank you!");
+        form.reset();
+
+        setTimeout(() => {
+          location.reload();
+        }, 2500);
+      } catch (err) {
+        console.error("Firestore error:", err);
+        showToast("Failed to send message.", "error");
+      }
     });
-
+  });
 
   </script>
 
